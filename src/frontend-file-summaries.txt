@@ -1,0 +1,23 @@
+{
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, authentication state management, profile setup modal trigger, and theme provider integration.",
+  "frontend/src/components/AppLayout.tsx": "Root layout component with sticky header, logo, navigation menu, user badge, auth controls, and footer with caffeine.ai attribution.",
+  "frontend/src/components/AuthControls.tsx": "Authentication button component that handles Internet Identity login/logout with loading states and query cache clearing.",
+  "frontend/src/components/UserBadge.tsx": "User profile display component showing avatar and name in the header for authenticated users.",
+  "frontend/src/components/ProfileSetupModal.tsx": "Modal dialog for first-time user profile creation with name input and avatar selection.",
+  "frontend/src/components/AccessDenied.tsx": "Access denied screen component for unauthorized admin page access attempts.",
+  "frontend/src/pages/HomePage.tsx": "Home page displaying hero section for unauthenticated users and match listing grid for authenticated users with navigation to match details.",
+  "frontend/src/pages/MatchDetailPage.tsx": "Match detail page showing match information and embedding the team builder component for player selection.",
+  "frontend/src/components/TeamBuilder.tsx": "Complex team builder component with player selection, role validation, captain/vice-captain assignment, and team summary panel.",
+  "frontend/src/pages/ContestsPage.tsx": "Contests listing page for a specific match showing available contests with join functionality and leaderboard navigation.",
+  "frontend/src/components/JoinContestDialog.tsx": "Dialog component for selecting a team to join a contest with team selection radio group.",
+  "frontend/src/pages/MyTeamsPage.tsx": "User's teams listing page displaying all created fantasy teams with captain/vice-captain details and player lists.",
+  "frontend/src/pages/MyContestsPage.tsx": "User's joined contests listing page with navigation to individual contest leaderboards.",
+  "frontend/src/pages/ContestDetailPage.tsx": "Contest detail page with leaderboard table showing ranked entries, points, and highlighting current user's position.",
+  "frontend/src/pages/AdminPage.tsx": "Admin panel page with tabs for seed data management and match scoring, protected by authentication check first (guests see AccessDenied immediately) then admin role check to avoid unnecessary backend calls.",
+  "frontend/src/components/AdminSeedPanel.tsx": "Admin panel component with forms for creating matches, adding players (using proper enum types), and creating contests with proper TypeScript enum handling.",
+  "frontend/src/components/AdminScoringForm.tsx": "Admin scoring form for marking matches as finished and submitting player points with scrollable player list.",
+  "frontend/src/hooks/useQueries.ts": "Centralized React Query hooks for all backend operations with authentication gating on all application data queries by using useInternetIdentity directly to check authentication state, preventing data loading for unauthenticated users while working with the existing useActor signature.",
+  "frontend/src/index.css": "Global styles with OKLCH color system using vibrant green primary color (hue 145) for a sporty cricket-field aesthetic in dark mode.",
+  "frontend/tailwind.config.js": "Tailwind configuration with Inter font family, custom border radius, and extended theme tokens matching the green sporty design system.",
+  "frontend/src/hooks/useActor.ts": "Backend actor initialization hook that exposes authentication state (isAuthenticated, callerPrincipal) alongside the actor instance, enabling React Query hooks to gate application data fetching behind Internet Identity login."
+}

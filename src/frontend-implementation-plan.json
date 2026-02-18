@@ -1,0 +1,74 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "FantasyXI frontend rebuild verification (Dream11-like MVP)",
+  "requirements": [
+    {
+      "id": "REQ-9",
+      "summary": "Verify and harden the existing Dream11-like MVP frontend flows (Internet Identity auth, profile setup, matches, team building, contests, leaderboards, and admin panels) so the app reliably loads and functions after redeploy.",
+      "acceptanceCriteria": [
+        "A new deployment is produced and the app loads successfully in a browser.",
+        "Users can sign in via Internet Identity and complete profile setup (name + avatar).",
+        "Authenticated users can: view matches, open a match, build and save an 11-player team with captain/vice-captain, browse contests for a match, join a contest with an existing team, and view My Teams/My Contests.",
+        "Admins can: seed players/matches/contests and submit scoring for a finished match; contest leaderboard reflects submitted points with captain/vice multipliers."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useActor.ts",
+          "operation": "modify",
+          "description": "Expose authentication-derived state (e.g., isAuthenticated / caller principal string) alongside the actor so React Query hooks can reliably gate all application-data fetching behind Internet Identity login. Use the selected authorization component’s frontend guidance for auth state handling and cache clearing; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Update all data-query hooks (matches, players, contests, my teams/contests, contest leaderboard, admin checks, and profile reads/writes) to only run when authenticated (and when the actor is ready), preventing any application data from loading for guests while keeping existing mutations and invalidations intact. Use the selected authorization component’s frontend guidance for role-based access/UI error handling; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Confirm the router + layout + profile setup modal wiring remains intact after the auth gating changes (no profile-setup flash; modal only appears after a successful Internet Identity login and confirmed missing profile). Use the selected authorization component’s recommended profile-setup gating pattern; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AuthControls.tsx",
+          "operation": "modify",
+          "description": "Ensure the login/logout UX remains robust (including clearing cached application data on logout) and aligns with the selected authorization component’s Internet Identity flow expectations; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/pages/AdminPage.tsx",
+          "operation": "modify",
+          "description": "Re-verify admin-only gating continues to work with the updated admin-check query behavior (show AccessDenied for non-admins, avoid unnecessary admin checks for guests). Use the selected authorization component’s role-based UI guidance; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "summary": "Ensure required static brand images exist under frontend/public/assets/generated with exact filenames and are used as static assets (no backend routing).",
+      "acceptanceCriteria": [
+        "The files are present under frontend/public/assets/generated with the exact filenames: fantasyxi-logo.dim_512x512.png and fantasyxi-hero-bg.dim_1600x900.png.",
+        "The application can load these assets as static files at runtime (no backend calls needed)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png",
+          "operation": "create",
+          "description": "Add the generated logo asset at the exact path frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png so it is served as a static file."
+        },
+        {
+          "path": "frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png",
+          "operation": "create",
+          "description": "Add the generated hero background asset at the exact path frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png so it is served as a static file."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "modify",
+          "description": "Verify the header logo references the exact static asset path and filename (frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png) and does not require any backend calls."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Verify the unauthenticated hero uses the exact static asset paths and filenames for both images (frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png and frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png) and that they load at runtime as static files."
+        }
+      ]
+    }
+  ]
+}

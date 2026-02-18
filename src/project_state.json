@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 5,
+  "summary": "Build a fantasy sports app similar to Dream11.",
+  "architectural_notes": [],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Modern sporty app logo with a stylized 'XI' mark in bold geometric shapes (fantasyxi-logo.dim_512x512.png)\n- Wide abstract stadium-light background with dark tones and subtle grain (fantasyxi-hero-bg.dim_1600x900.png)",
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-sign-in-and-persist-a-user-profile-linked-to-the-authenticated-principal-display-name-optional-avatar-selection-so-users-can-use-the-app-under-their-identity",
+      "title": "Implement Internet Identity sign-in and persist a user profile linked to the authenticated principal (display name, optional avatar selection) so users can use the app under their identity.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-the-core-fantasy-flow-allow-a-signed-in-user-to-pick-a-match-build-a-fantasy-team-from-available-players-with-role-constraints-and-save-the-team-for-that-match",
+      "title": "Implement the core fantasy flow: allow a signed-in user to pick a match, build a fantasy team from available players with role constraints, and save the team for that match.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-contests-allow-users-to-browse-contests-for-a-match-join-a-contest-with-an-existing-team-and-view-their-joined-contests",
+      "title": "Implement contests: allow users to browse contests for a match, join a contest with an existing team, and view their joined contests.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-scoring-and-leaderboards-suitable-for-an-mvp-enable-admins-to-enter-per-player-points-for-a-match-compute-each-joined-entry-s-team-points-including-captain-vice-multipliers-and-display-contest-leaderboards",
+      "title": "Add scoring and leaderboards suitable for an MVP: enable admins to enter per-player points for a match, compute each joined entry's team points (including captain/vice multipliers), and display contest leaderboards.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-core-frontend-navigation-and-pages-for-the-mvp-home-sports-matches-match-detail-players-team-builder-contests-list-join-my-teams-my-contests-contest-detail-leaderboard-and-admin-seed-data-scoring",
+      "title": "Create core frontend navigation and pages for the MVP: Home (sports/matches), Match Detail (players + team builder), Contests (list + join), My Teams, My Contests, Contest Detail (leaderboard), and Admin (seed data + scoring).",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-define-and-apply-a-coherent-visual-theme-for-the-app-distinct-typography-color-palette-spacing-and-card-based-layout-appropriate-for-a-competitive-fantasy-sports-product-and-enforce-it-consistently-across-all-pages",
+      "title": "Define and apply a coherent visual theme for the app (distinct typography, color palette, spacing, and card-based layout) appropriate for a competitive fantasy sports product, and enforce it consistently across all pages.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-generated-static-brand-assets-logo-simple-background-and-render-them-in-the-ui-from-frontend-public-assets-generated-without-routing-images-through-the-backend",
+      "title": "Add generated static brand assets (logo + simple background) and render them in the UI from frontend/public/assets/generated without routing images through the backend.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-rebuild-and-deploy-the-existing-fantasyxi-application-so-it-is-accessible-again-after-the-previous-draft-expiry-keeping-all-current-implemented-dream11-like-mvp-flows-intact-authentication-matches-team-building-contests-scoring-leaderboards-and-admin-seeding",
+      "title": "Rebuild and deploy the existing FantasyXI application so it is accessible again after the previous draft expiry, keeping all current implemented Dream11-like MVP flows intact (authentication, matches, team building, contests, scoring, leaderboards, and admin seeding).",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-required-static-brand-images-exist-as-generated-assets-and-are-available-from-the-frontend-without-routing-through-the-backend-using-the-exact-filenames-specified-in-project-state",
+      "title": "Ensure the required static brand images exist as generated assets and are available from the frontend without routing through the backend, using the exact filenames specified in project state.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create a Dream11-like fantasy sports application (core fantasy contest experience).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Provide an MVP data model and admin/seed workflow in the backend for Sports, Matches, Players, and Contests without relying on external sports APIs (all data is created/managed in-app).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "FantasyXI",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-rebuild-and-deploy-the-existing-fantasyxi-application-so-it-is-accessible-again-after-the-previous-draft-expiry-keeping-all-current-implemented-dream11-like-mvp-flows-intact-authentication-matches-team-building-contests-scoring-leaderboards-and-admin-seeding",
+      "featureTitle": "Rebuild and deploy the existing FantasyXI application so it is accessible again after the previous draft expiry, keeping all current implemented Dream11-like MVP flows intact (authentication, matches, team building, contests, scoring, leaderboards, and admin seeding).",
+      "files": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/AdminPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-9"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-ensure-the-required-static-brand-images-exist-as-generated-assets-and-are-available-from-the-frontend-without-routing-through-the-backend-using-the-exact-filenames-specified-in-project-state",
+      "featureTitle": "Ensure the required static brand images exist as generated assets and are available from the frontend without routing through the backend, using the exact filenames specified in project state.",
+      "files": [],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

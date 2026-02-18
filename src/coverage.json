@@ -1,0 +1,61 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-17T06:24:28.610Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 2,
+    "implemented": 2,
+    "items": [
+      {
+        "id": "REQ-10",
+        "summary": "Ensure the required static brand images exist as generated assets and are available from the frontend without routing through the backend, using the exact filenames specified in project state.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png",
+          "frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png",
+          "frontend/src/components/AppLayout.tsx",
+          "frontend/src/pages/HomePage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png",
+          "frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png"
+        ]
+      },
+      {
+        "id": "REQ-9",
+        "summary": "Rebuild and deploy the existing FantasyXI application so it is accessible again after the previous draft expiry, keeping all current implemented Dream11-like MVP flows intact (authentication, matches, team building, contests, scoring, leaderboards, and admin seeding).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useActor.ts",
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/App.tsx",
+          "frontend/src/components/AuthControls.tsx",
+          "frontend/src/pages/AdminPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/AdminPage.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "build-template/README.md",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png",
+    "frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/AdminPage.tsx",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

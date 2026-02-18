@@ -1,0 +1,72 @@
+{
+  "kind": "build_request",
+  "title": "Rebuild and verify Dream11-like fantasy sports MVP (FantasyXI)",
+  "projectName": "FantasyXI",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-9",
+      "text": "Rebuild and deploy the existing FantasyXI application so it is accessible again after the previous draft expiry, keeping all current implemented Dream11-like MVP flows intact (authentication, matches, team building, contests, scoring, leaderboards, and admin seeding).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Create a app like dream 11"
+        ]
+      },
+      "acceptanceCriteria": [
+        "A new deployment is produced and the app loads successfully in a browser.",
+        "Users can sign in via Internet Identity and complete profile setup (name + avatar).",
+        "Authenticated users can: view matches, open a match, build and save an 11-player team with captain/vice-captain, browse contests for a match, join a contest with an existing team, and view My Teams/My Contests.",
+        "Admins can: seed players/matches/contests and submit scoring for a finished match; contest leaderboard reflects submitted points with captain/vice multipliers."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Ensure the required static brand images exist as generated assets and are available from the frontend without routing through the backend, using the exact filenames specified in project state.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Create a app like dream 11"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The files are present under frontend/public/assets/generated with the exact filenames: fantasyxi-logo.dim_512x512.png and fantasyxi-hero-bg.dim_1600x900.png.",
+        "The application can load these assets as static files at runtime (no backend calls needed)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor in backend/main.mo; only add backend/migration.mo if a state upgrade is required.",
+    "Do not edit files under frontend/src/components/ui or any other immutable paths listed in SYSTEM_CONTEXT; compose them instead.",
+    "Use English for all user-facing text."
+  ],
+  "nonGoals": [
+    "Integrating external sports data APIs (all data remains created/managed in-app).",
+    "Payments/wallet integrations or real-money contest handling.",
+    "Real-time features (WebSockets/live updates).",
+    "Third-party authentication providers other than Internet Identity."
+  ],
+  "imageRequirements": {
+    "required": [
+      "Modern sporty app logo with a stylized 'XI' mark in bold geometric shapes (fantasyxi-logo.dim_512x512.png)",
+      "Wide abstract stadium-light background with dark tones and subtle grain (fantasyxi-hero-bg.dim_1600x900.png)"
+    ],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}
