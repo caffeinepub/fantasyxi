@@ -1,25 +1,51 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-17T06:24:28.608Z",
-  "summary": "The diff only shows frontend logic changes (React Query authentication gating and an admin page auth/admin-check flow). It does not show addition of the required static brand image files, and there are no new asset files added.",
+  "generatedAt": "2026-02-18T03:23:04.230Z",
+  "summary": "Diff adds an auth-init monitoring hook with a 12s timeout and a UI banner that shows initialization progress or an error/timeout message, and integrates the banner into the app layout. However, the provided \"Retry\" action performs a full page reload, and the diagnostics do not clearly cover the requested Internet Identity/AuthClient lifecycle stages based on the visible changes.",
   "missing_requirements": [
     {
-      "id": "REQ-10",
-      "requirement": "Ensure the required static brand images exist as generated assets and are available from the frontend without routing through the backend, using the exact filenames specified (fantasyxi-logo.dim_512x512.png and fantasyxi-hero-bg.dim_1600x900.png under frontend/public/assets/generated).",
-      "reason": "No files were added in the diff, and there is no evidence of the required PNG assets being created under frontend/public/assets/generated or referenced as static public assets.",
+      "id": "REQ-12",
+      "requirement": "A user can trigger a retry (without requiring a hard reload) to re-attempt Internet Identity initialization.",
+      "reason": "The implemented retry action explicitly reloads the page (hard reload) rather than re-attempting initialization in-app.",
       "evidence": [
-        "File diff summary: \"Added: 0\"",
-        "Modified files list contains no frontend/public/assets/generated entries"
+        "frontend/src/hooks/useAuthInit.ts (retryInitialization calls window.location.reload())",
+        "frontend/src/components/AuthInitStatusBanner.tsx (Retry button calls retryInitialization; separate Refresh Page button also reloads)"
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "requirement": "Browser console logs clearly indicate the startup/auth initialization stages (e.g., when initialization starts, when AuthClient is created, when isAuthenticated resolves, and when initialization ends or times out).",
+      "reason": "The visible logging covers monitoring, starting the timeout, success, error, timeout, and retry, but the diff summary does not show logs for AuthClient creation or an explicit isAuthenticated resolution stage.",
+      "evidence": [
+        "frontend/src/hooks/useAuthInit.ts (logs: monitoring, timeout monitor start, successful, error, timeout; no AuthClient-created/isAuthenticated-resolved stage shown)"
       ]
     }
   ],
-  "hallucinated_features": [],
-  "confidence": 0.78,
+  "hallucinated_features": [
+    {
+      "description": "Adds a \"Refresh Page\" recovery action that triggers window.location.reload() in the auth init failure banner.",
+      "reason": "REQ-12 asks for a retry without hard reload; it does not request an explicit full refresh-page action.",
+      "evidence": [
+        "frontend/src/components/AuthInitStatusBanner.tsx (Refresh Page button uses window.location.reload())"
+      ]
+    },
+    {
+      "description": "Disables the Login button during auth initialization by combining loginStatus with initStatus.",
+      "reason": "Not requested by REQ-11/12/13; could be acceptable but is additional behavior beyond the stated requirements.",
+      "evidence": [
+        "frontend/src/components/AuthControls.tsx (disabled when initStatus === 'initializing')"
+      ]
+    }
+  ],
+  "confidence": 0.72,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/AdminPage.tsx",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppLayout.tsx",
+    "frontend/src/components/AuthControls.tsx",
+    "frontend/src/components/AuthInitStatusBanner.tsx",
+    "frontend/src/hooks/useAuthInit.ts",
     "project_state.json"
   ]
 }

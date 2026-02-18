@@ -1,9 +1,10 @@
 import { Outlet, useNavigate, useRouterState } from '@tanstack/react-router';
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
 import { useIsCallerAdmin } from '../hooks/useQueries';
-import { Trophy, Users, ListChecks, Target, Shield } from 'lucide-react';
+import { Trophy, Users, ListChecks, Shield } from 'lucide-react';
 import AuthControls from './AuthControls';
 import UserBadge from './UserBadge';
+import AuthInitStatusBanner from './AuthInitStatusBanner';
 
 export default function AppLayout() {
   const navigate = useNavigate();
@@ -88,6 +89,9 @@ export default function AppLayout() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
+        {/* Auth Init Status Banner */}
+        <AuthInitStatusBanner />
+        
         <Outlet />
       </main>
 

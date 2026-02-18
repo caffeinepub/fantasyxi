@@ -1,72 +1,77 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "FantasyXI frontend rebuild verification (Dream11-like MVP)",
+  "title": "FantasyXI: Add auth-init timeout, recoverable error UI, and diagnostics to avoid infinite startup spinner",
   "requirements": [
     {
-      "id": "REQ-9",
-      "summary": "Verify and harden the existing Dream11-like MVP frontend flows (Internet Identity auth, profile setup, matches, team building, contests, leaderboards, and admin panels) so the app reliably loads and functions after redeploy.",
+      "id": "REQ-11",
+      "summary": "Add a hard timeout to Internet Identity initialization so the app shell renders even if auth init hangs or throws.",
       "acceptanceCriteria": [
-        "A new deployment is produced and the app loads successfully in a browser.",
-        "Users can sign in via Internet Identity and complete profile setup (name + avatar).",
-        "Authenticated users can: view matches, open a match, build and save an 11-player team with captain/vice-captain, browse contests for a match, join a contest with an existing team, and view My Teams/My Contests.",
-        "Admins can: seed players/matches/contests and submit scoring for a finished match; contest leaderboard reflects submitted points with captain/vice multipliers."
+        "If Internet Identity initialization takes longer than a fixed timeout (e.g., 10–15 seconds), the app stops showing the full-screen spinner and renders the normal app shell.",
+        "The app is usable in an unauthenticated state even if Internet Identity initialization fails or times out (user can still see the unauthenticated home/hero and attempt login).",
+        "The app no longer remains on the initial loading screen for ~2 minutes with no change."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useActor.ts",
+          "path": "frontend/src/hooks/useInternetIdentity.ts",
           "operation": "modify",
-          "description": "Expose authentication-derived state (e.g., isAuthenticated / caller principal string) alongside the actor so React Query hooks can reliably gate all application-data fetching behind Internet Identity login. Use the selected authorization component’s frontend guidance for auth state handling and cache clearing; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useQueries.ts",
-          "operation": "modify",
-          "description": "Update all data-query hooks (matches, players, contests, my teams/contests, contest leaderboard, admin checks, and profile reads/writes) to only run when authenticated (and when the actor is ready), preventing any application data from loading for guests while keeping existing mutations and invalidations intact. Use the selected authorization component’s frontend guidance for role-based access/UI error handling; verify the component's usage instructions before implementing."
+          "description": "Implement a bounded startup initialization flow (e.g., Promise.race with a 10–15s timeout) around AuthClient creation and isAuthenticated checks; ensure the provider exits the initializing state on timeout or error; expose explicit init state (e.g., initStatus/initError) separate from interactive login status, and add a retry initializer function that can re-run init without a full reload."
         },
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Confirm the router + layout + profile setup modal wiring remains intact after the auth gating changes (no profile-setup flash; modal only appears after a successful Internet Identity login and confirmed missing profile). Use the selected authorization component’s recommended profile-setup gating pattern; verify the component's usage instructions before implementing."
+          "description": "Remove/avoid the full-screen blocking spinner gate on initial auth init; always render the normal app shell (ThemeProvider + RouterProvider), while letting auth init progress in the background and relying on a non-blocking banner/state for initialization progress/errors."
         },
         {
           "path": "frontend/src/components/AuthControls.tsx",
           "operation": "modify",
-          "description": "Ensure the login/logout UX remains robust (including clearing cached application data on logout) and aligns with the selected authorization component’s Internet Identity flow expectations; verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/AdminPage.tsx",
-          "operation": "modify",
-          "description": "Re-verify admin-only gating continues to work with the updated admin-check query behavior (show AccessDenied for non-admins, avoid unnecessary admin checks for guests). Use the selected authorization component’s role-based UI guidance; verify the component's usage instructions before implementing."
+          "description": "Make the login action resilient if startup init timed out/failed (e.g., allow login to lazily create/recreate the AuthClient or trigger provider retry) so users can still attempt login from the rendered app shell after init timeout."
         }
       ]
     },
     {
-      "id": "REQ-10",
-      "summary": "Ensure required static brand images exist under frontend/public/assets/generated with exact filenames and are used as static assets (no backend routing).",
+      "id": "REQ-12",
+      "summary": "Show a clear, user-facing auth initialization error state with recovery actions (Retry/Refresh) without blocking unauthenticated navigation.",
       "acceptanceCriteria": [
-        "The files are present under frontend/public/assets/generated with the exact filenames: fantasyxi-logo.dim_512x512.png and fantasyxi-hero-bg.dim_1600x900.png.",
-        "The application can load these assets as static files at runtime (no backend calls needed)."
+        "If initialization errors or times out, a visible error message is shown (in English) rather than a never-ending loading indicator.",
+        "A user can trigger a retry (without requiring a hard reload) to re-attempt Internet Identity initialization.",
+        "The error state does not block navigation to unauthenticated content (home hero section still renders)."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png",
+          "path": "frontend/src/components/AuthInitStatusBanner.tsx",
           "operation": "create",
-          "description": "Add the generated logo asset at the exact path frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png so it is served as a static file."
-        },
-        {
-          "path": "frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png",
-          "operation": "create",
-          "description": "Add the generated hero background asset at the exact path frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png so it is served as a static file."
+          "description": "Create a non-blocking banner/card component that reads auth init state (initializing/error) and renders: (1) a small inline loading indicator during init, (2) a clear English error message on failure/timeout, and (3) recovery actions including a “Retry” button (calls provider retry) and a “Refresh” button (window.location.reload). Use shadcn-ui composed components (e.g., Card, Button) for consistent styling. Verify the component's usage instructions before implementing."
         },
         {
           "path": "frontend/src/components/AppLayout.tsx",
           "operation": "modify",
-          "description": "Verify the header logo references the exact static asset path and filename (frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png) and does not require any backend calls."
+          "description": "Wire AuthInitStatusBanner into the layout (e.g., near the top of the main content or under the header) so it is visible when init fails/times out but does not block the Outlet-rendered routes or the unauthenticated home/hero. Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/pages/HomePage.tsx",
+          "path": "frontend/src/hooks/useInternetIdentity.ts",
           "operation": "modify",
-          "description": "Verify the unauthenticated hero uses the exact static asset paths and filenames for both images (frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png and frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png) and that they load at runtime as static files."
+          "description": "Expose provider fields needed by the banner and recovery actions (e.g., initError, initStatus, retryInitialization), and ensure init failures/timeouts are represented distinctly from normal unauthenticated state so UI can render an actionable message."
+        }
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "summary": "Add lightweight, non-sensitive browser-console diagnostics for auth startup stages (start, client created, isAuthenticated resolved, end/timeout/error).",
+      "acceptanceCriteria": [
+        "Browser console logs clearly indicate the startup/auth initialization stages and whether a timeout or error occurred.",
+        "Diagnostics do not expose any secret values (e.g., do not log admin tokens, delegations, or full identities)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useInternetIdentity.ts",
+          "operation": "modify",
+          "description": "Add structured console diagnostics for the auth init path: log when initialization starts, when AuthClient creation starts/ends, when isAuthenticated starts/ends, and when initialization completes, times out, or errors. Ensure logs avoid sensitive data (no delegations, no tokens, no full identity objects; at most log boolean states and coarse error messages)."
+        },
+        {
+          "path": "frontend/src/main.tsx",
+          "operation": "modify",
+          "description": "Add a single lightweight startup log (e.g., 'App bootstrapping') to help correlate auth-init logs with app mount timing, without printing any sensitive values."
         }
       ]
     }

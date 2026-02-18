@@ -1,4 +1,5 @@
 import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useAuthInit } from '../hooks/useAuthInit';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { LogIn, LogOut } from 'lucide-react';
@@ -6,10 +7,11 @@ import { toast } from 'sonner';
 
 export default function AuthControls() {
   const { login, clear, loginStatus, identity } = useInternetIdentity();
+  const { initStatus } = useAuthInit();
   const queryClient = useQueryClient();
 
   const isAuthenticated = !!identity;
-  const disabled = loginStatus === 'logging-in';
+  const disabled = loginStatus === 'logging-in' || initStatus === 'initializing';
 
   const handleAuth = async () => {
     if (isAuthenticated) {
@@ -18,8 +20,8 @@ export default function AuthControls() {
       toast.success('Logged out successfully');
     } else {
       try {
-        await login();
-        toast.success('Logged in successfully');
+        login();
+        // Don't show success toast here - it will be shown after successful login
       } catch (error: any) {
         console.error('Login error:', error);
         if (error.message === 'User is already authenticated') {

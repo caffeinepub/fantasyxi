@@ -1,11 +1,12 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 5,
+  "projectStateVersion": 7,
   "summary": "Build a fantasy sports app similar to Dream11.",
   "architectural_notes": [],
-  "known_issues": [],
-  "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Modern sporty app logo with a stylized 'XI' mark in bold geometric shapes (fantasyxi-logo.dim_512x512.png)\n- Wide abstract stadium-light background with dark tones and subtle grain (fantasyxi-hero-bg.dim_1600x900.png)",
+  "known_issues": [
+    "App stuck on initial loading spinner (\"Get start\" not responding); spinner never finishes (reported after ~2 minutes)."
+  ],
+  "isFixRequest": true,
   "existing_features": [
     {
       "id": "feature-implement-internet-identity-sign-in-and-persist-a-user-profile-linked-to-the-authenticated-principal-display-name-optional-avatar-selection-so-users-can-use-the-app-under-their-identity",
@@ -78,6 +79,22 @@
         "REQ-10"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-prevent-the-application-from-being-stuck-indefinitely-on-the-initial-full-screen-loading-spinner-by-adding-a-hard-timeout-to-internet-identity-initialization-when-the-timeout-is-hit-or-initialization-throws-exit-the-initializing-state-and-allow-the-app-ui-to-render",
+      "title": "Prevent the application from being stuck indefinitely on the initial full-screen loading spinner by adding a hard timeout to Internet Identity initialization; when the timeout is hit (or initialization throws), exit the initializing state and allow the app UI to render.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-when-internet-identity-initialization-fails-or-times-out-show-a-clear-user-facing-error-state-with-recovery-actions-instead-of-an-endless-spinner-e-g-failed-to-initialize-authentication-please-refresh-and-try-again-with-a-retry-action",
+      "title": "When Internet Identity initialization fails or times out, show a clear, user-facing error state with recovery actions instead of an endless spinner (e.g., “Failed to initialize authentication. Please refresh and try again.” with a “Retry” action).",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -92,6 +109,14 @@
       "summary": "Provide an MVP data model and admin/seed workflow in the backend for Sports, Matches, Players, and Contests without relying on external sports APIs (all data is created/managed in-app).",
       "reqIds": [
         "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Add lightweight diagnostics for the startup/auth initialization path so the cause of slow/hung initialization can be identified in browser logs (e.g., log when initialization starts, when AuthClient is created, when isAuthenticated resolves, and when initialization ends or times out).",
+      "reqIds": [
+        "REQ-13"
       ],
       "status": "pending"
     }

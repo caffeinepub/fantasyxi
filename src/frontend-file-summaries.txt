@@ -1,7 +1,7 @@
 {
-  "frontend/src/App.tsx": "Main application component with TanStack Router setup, authentication state management, profile setup modal trigger, and theme provider integration.",
-  "frontend/src/components/AppLayout.tsx": "Root layout component with sticky header, logo, navigation menu, user badge, auth controls, and footer with caffeine.ai attribution.",
-  "frontend/src/components/AuthControls.tsx": "Authentication button component that handles Internet Identity login/logout with loading states and query cache clearing.",
+  "frontend/src/App.tsx": "Main application component with TanStack Router setup, authentication state management, and profile setup modal trigger; removed blocking initialization spinner to allow app shell to render immediately.",
+  "frontend/src/components/AppLayout.tsx": "Root layout component with sticky header, logo, navigation menu, user badge, auth controls, AuthInitStatusBanner integration near top of main content, and footer with caffeine.ai attribution.",
+  "frontend/src/components/AuthControls.tsx": "Authentication button component that handles Internet Identity login/logout with loading states, query cache clearing, and uses useAuthInit to disable login during initialization.",
   "frontend/src/components/UserBadge.tsx": "User profile display component showing avatar and name in the header for authenticated users.",
   "frontend/src/components/ProfileSetupModal.tsx": "Modal dialog for first-time user profile creation with name input and avatar selection.",
   "frontend/src/components/AccessDenied.tsx": "Access denied screen component for unauthorized admin page access attempts.",
@@ -19,5 +19,9 @@
   "frontend/src/hooks/useQueries.ts": "Centralized React Query hooks for all backend operations with authentication gating on all application data queries by using useInternetIdentity directly to check authentication state, preventing data loading for unauthenticated users while working with the existing useActor signature.",
   "frontend/src/index.css": "Global styles with OKLCH color system using vibrant green primary color (hue 145) for a sporty cricket-field aesthetic in dark mode.",
   "frontend/tailwind.config.js": "Tailwind configuration with Inter font family, custom border radius, and extended theme tokens matching the green sporty design system.",
-  "frontend/src/hooks/useActor.ts": "Backend actor initialization hook that exposes authentication state (isAuthenticated, callerPrincipal) alongside the actor instance, enabling React Query hooks to gate application data fetching behind Internet Identity login."
+  "frontend/src/hooks/useActor.ts": "Backend actor initialization hook that exposes authentication state (isAuthenticated, callerPrincipal) alongside the actor instance, enabling React Query hooks to gate application data fetching behind Internet Identity login.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Internet Identity provider hook with bounded initialization timeout (12s), separate init state tracking (initStatus/initError), retry functionality, and comprehensive console diagnostics for auth startup stages without exposing sensitive data.",
+  "frontend/src/components/AuthInitStatusBanner.tsx": "Non-blocking banner component that displays auth initialization progress, timeout/error messages with clear English copy, and recovery actions (Retry/Refresh buttons) using the useAuthInit hook.",
+  "frontend/src/main.tsx": "Application entry point with QueryClient and InternetIdentityProvider setup, plus lightweight startup diagnostic log.",
+  "frontend/src/hooks/useAuthInit.ts": "Custom hook that monitors Internet Identity initialization status with a 12-second timeout, tracks init errors, and provides retry functionality by wrapping the existing useInternetIdentity hook without modifying it."
 }

@@ -1,58 +1,65 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-17T06:24:28.610Z",
+  "generatedAt": "2026-02-18T03:23:04.232Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
+    "total": 3,
     "implemented": 2,
     "items": [
       {
-        "id": "REQ-10",
-        "summary": "Ensure the required static brand images exist as generated assets and are available from the frontend without routing through the backend, using the exact filenames specified in project state.",
+        "id": "REQ-11",
+        "summary": "Prevent the application from being stuck indefinitely on the initial full-screen loading spinner by adding a hard timeout to Internet Identity initialization; when the timeout is hit (or initialization throws), exit the initializing state and allow the app UI to render.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png",
-          "frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png",
-          "frontend/src/components/AppLayout.tsx",
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/hooks/useInternetIdentity.ts",
+          "frontend/src/App.tsx",
+          "frontend/src/components/AuthControls.tsx"
         ],
         "matchedFiles": [
-          "frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png",
-          "frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png"
+          "frontend/src/App.tsx",
+          "frontend/src/components/AuthControls.tsx"
         ]
       },
       {
-        "id": "REQ-9",
-        "summary": "Rebuild and deploy the existing FantasyXI application so it is accessible again after the previous draft expiry, keeping all current implemented Dream11-like MVP flows intact (authentication, matches, team building, contests, scoring, leaderboards, and admin seeding).",
+        "id": "REQ-12",
+        "summary": "When Internet Identity initialization fails or times out, show a clear, user-facing error state with recovery actions instead of an endless spinner (e.g., “Failed to initialize authentication. Please refresh and try again.” with a “Retry” action).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useActor.ts",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/App.tsx",
-          "frontend/src/components/AuthControls.tsx",
-          "frontend/src/pages/AdminPage.tsx"
+          "frontend/src/components/AuthInitStatusBanner.tsx",
+          "frontend/src/components/AppLayout.tsx",
+          "frontend/src/hooks/useInternetIdentity.ts"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/pages/AdminPage.tsx"
+          "frontend/src/components/AuthInitStatusBanner.tsx",
+          "frontend/src/components/AppLayout.tsx"
         ]
+      },
+      {
+        "id": "REQ-13",
+        "summary": "Add lightweight diagnostics for the startup/auth initialization path so the cause of slow/hung initialization can be identified in browser logs (e.g., log when initialization starts, when AuthClient is created, when isAuthenticated resolves, and when initialization ends or times out).",
+        "status": "missing",
+        "plannedFiles": [
+          "frontend/src/hooks/useInternetIdentity.ts",
+          "frontend/src/main.tsx"
+        ],
+        "matchedFiles": []
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
-    "build-template/README.md",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/assets/generated/fantasyxi-hero-bg.dim_1600x900.png",
-    "frontend/public/assets/generated/fantasyxi-logo.dim_512x512.png",
-    "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/AdminPage.tsx",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppLayout.tsx",
+    "frontend/src/components/AuthControls.tsx",
+    "frontend/src/components/AuthInitStatusBanner.tsx",
+    "frontend/src/hooks/useAuthInit.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

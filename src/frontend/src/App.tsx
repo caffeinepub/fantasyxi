@@ -78,24 +78,11 @@ declare module '@tanstack/react-router' {
 }
 
 export default function App() {
-  const { identity, isInitializing } = useInternetIdentity();
+  const { identity } = useInternetIdentity();
   const { data: userProfile, isLoading: profileLoading, isFetched } = useGetCallerUserProfile();
 
   const isAuthenticated = !!identity;
   const showProfileSetup = isAuthenticated && !profileLoading && isFetched && userProfile === null;
-
-  if (isInitializing) {
-    return (
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-        <div className="flex h-screen items-center justify-center bg-background">
-          <div className="text-center">
-            <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
-            <p className="text-muted-foreground">Loading FantasyXI...</p>
-          </div>
-        </div>
-      </ThemeProvider>
-    );
-  }
 
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>

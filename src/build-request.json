@@ -1,62 +1,74 @@
 {
   "kind": "build_request",
-  "title": "Rebuild and verify Dream11-like fantasy sports MVP (FantasyXI)",
+  "title": "Fix infinite loading spinner on app start (Internet Identity init never finishes)",
   "projectName": "FantasyXI",
-  "priority": "normal",
+  "priority": "high",
   "requirements": [
     {
-      "id": "REQ-9",
-      "text": "Rebuild and deploy the existing FantasyXI application so it is accessible again after the previous draft expiry, keeping all current implemented Dream11-like MVP flows intact (authentication, matches, team building, contests, scoring, leaderboards, and admin seeding).",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-5"
-        ],
-        "quotes": [
-          "Create a app like dream 11"
-        ]
-      },
-      "acceptanceCriteria": [
-        "A new deployment is produced and the app loads successfully in a browser.",
-        "Users can sign in via Internet Identity and complete profile setup (name + avatar).",
-        "Authenticated users can: view matches, open a match, build and save an 11-player team with captain/vice-captain, browse contests for a match, join a contest with an existing team, and view My Teams/My Contests.",
-        "Admins can: seed players/matches/contests and submit scoring for a finished match; contest leaderboard reflects submitted points with captain/vice multipliers."
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "text": "Ensure the required static brand images exist as generated assets and are available from the frontend without routing through the backend, using the exact filenames specified in project state.",
+      "id": "REQ-11",
+      "text": "Prevent the application from being stuck indefinitely on the initial full-screen loading spinner by adding a hard timeout to Internet Identity initialization; when the timeout is hit (or initialization throws), exit the initializing state and allow the app UI to render.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "user-1"
         ],
         "quotes": [
-          "Create a app like dream 11"
+          "Page show loading spinner that never finishes2m"
         ]
       },
       "acceptanceCriteria": [
-        "The files are present under frontend/public/assets/generated with the exact filenames: fantasyxi-logo.dim_512x512.png and fantasyxi-hero-bg.dim_1600x900.png.",
-        "The application can load these assets as static files at runtime (no backend calls needed)."
+        "If Internet Identity initialization takes longer than a fixed timeout (e.g., 10–15 seconds), the app stops showing the full-screen spinner and renders the normal app shell.",
+        "The app is usable in an unauthenticated state even if Internet Identity initialization fails or times out (user can still see the unauthenticated home/hero and attempt login).",
+        "The app no longer remains on the initial loading screen for ~2 minutes with no change."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "When Internet Identity initialization fails or times out, show a clear, user-facing error state with recovery actions instead of an endless spinner (e.g., “Failed to initialize authentication. Please refresh and try again.” with a “Retry” action).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "user-1"
+        ],
+        "quotes": [
+          "Page show loading spinner that never finishes2m"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If initialization errors or times out, a visible error message is shown (in English) rather than a never-ending loading indicator.",
+        "A user can trigger a retry (without requiring a hard reload) to re-attempt Internet Identity initialization.",
+        "The error state does not block navigation to unauthenticated content (home hero section still renders)."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Add lightweight diagnostics for the startup/auth initialization path so the cause of slow/hung initialization can be identified in browser logs (e.g., log when initialization starts, when AuthClient is created, when isAuthenticated resolves, and when initialization ends or times out).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "user-1"
+        ],
+        "quotes": [
+          "Page show loading spinner that never finishes2m"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Browser console logs clearly indicate the startup/auth initialization stages and whether a timeout or error occurred.",
+        "Diagnostics do not expose any secret values (e.g., do not log admin tokens, delegations, or full identities)."
       ]
     }
   ],
   "constraints": [
-    "Backend must remain a single Motoko actor in backend/main.mo; only add backend/migration.mo if a state upgrade is required.",
-    "Do not edit files under frontend/src/components/ui or any other immutable paths listed in SYSTEM_CONTEXT; compose them instead.",
-    "Use English for all user-facing text."
+    "Do not edit files under frontend/src/components/ui (Shadcn UI components are read-only and must be composed).",
+    "Do not modify immutable paths listed in SYSTEM_CONTEXT.",
+    "Maintain Internet Identity as the only authentication mechanism (no third-party auth)."
   ],
   "nonGoals": [
-    "Integrating external sports data APIs (all data remains created/managed in-app).",
-    "Payments/wallet integrations or real-money contest handling.",
-    "Real-time features (WebSockets/live updates).",
-    "Third-party authentication providers other than Internet Identity."
+    "Adding new product features unrelated to startup reliability.",
+    "Changing backend data models or contest/team/scoring logic unless required to resolve the startup hang."
   ],
   "imageRequirements": {
-    "required": [
-      "Modern sporty app logo with a stylized 'XI' mark in bold geometric shapes (fantasyxi-logo.dim_512x512.png)",
-      "Wide abstract stadium-light background with dark tones and subtle grain (fantasyxi-hero-bg.dim_1600x900.png)"
-    ],
+    "required": [],
     "edits": []
   },
   "userProfileUpdate": {
